@@ -1,1 +1,0 @@
-Fixed malformed like URL in home.html
