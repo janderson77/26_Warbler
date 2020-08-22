@@ -219,7 +219,7 @@ def show_liked_messages(user_id):
     return render_template('users/likes.html', user=user, likes=user.likes)
 
 
-@app.route('/messages/<int:message_id/like', methods=['POST'])
+@app.route('/messages/<int:message_id>/like', methods=['POST'])
 def add_like(message_id):
     """Will add and remove a message from a user's likes"""
 
