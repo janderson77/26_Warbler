@@ -215,6 +215,7 @@ def show_liked_messages(user_id):
     if not g.user:
         flash("Access Unauthorized.", 'danger')
         return redirect('/')
+
     user = User.query.get_or_404(user_id)
     return render_template('users/likes.html', user=user, likes=user.likes)
 
