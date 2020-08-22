@@ -145,6 +145,9 @@ def users_show(user_id):
 
     user = User.query.get_or_404(user_id)
 
+    if g.user:
+        user_likes = [msg.id for msg in g.user.likes]
+
     # snagging messages in order from the database;
     # user.messages won't be in order by default
     messages = (Message
@@ -153,7 +156,8 @@ def users_show(user_id):
                 .order_by(Message.timestamp.desc())
                 .limit(100)
                 .all())
-    return render_template('users/show.html', user=user, messages=messages)
+    likes = [message.id for message in user.likes]
+    return render_template('users/show.html', user=user, messages=messages, likes=likes, user_likes=user_likes)
 
 
 @app.route('/users/<int:user_id>/following')
@@ -359,7 +363,9 @@ def homepage():
                     .limit(100)
                     .all())
 
-        return render_template('home.html', messages=messages)
+        liked_messages = [msg.id for msg in g.user.likes]
+
+        return render_template('home.html', messages=messages, likes=liked_messages)
 
     else:
         return render_template('home-anon.html')

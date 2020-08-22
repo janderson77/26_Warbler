@@ -12,8 +12,11 @@
             </a>
             <div class="message-area">
               <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-              <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+              <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}
+              <i class="far fa-star" style="color: gold;"></i>
+              </span>
               <p>{{ msg.text }}</p>
+              
             </div>
             {% if user.id == g.user.id %}
             <form method="POST" action="/messages/{{ msg.id }}/like" class="messages-like">
@@ -26,6 +29,7 @@
               </button>
             </form>
             {% endif %}
+            
           </li>
           {% endfor %}
         </ul>
