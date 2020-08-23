@@ -145,8 +145,7 @@ def users_show(user_id):
 
     user = User.query.get_or_404(user_id)
 
-    if g.user:
-        user_likes = [msg.id for msg in g.user.likes]
+    user_likes = [msg.id for msg in g.user.likes] or None
 
     # snagging messages in order from the database;
     # user.messages won't be in order by default
@@ -229,7 +228,7 @@ def add_like(message_id):
     """Will add and remove a message from a user's likes"""
 
     if not g.user:
-        flash("Access Unauthorized.", 'danger')
+        flash("Access unauthorized.", 'danger')
         return redirect('/')
 
     liked_message = Message.query.get_or_404(message_id)
