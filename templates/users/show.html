@@ -2,7 +2,7 @@
 {% block user_details %}
   <div class="col-sm-6">
     <ul class="list-group" id="messages">
-
+    {% if messages %}
       {% for msg in messages %}
 
       <li class="list-group-item">
@@ -13,20 +13,26 @@
         <div class="message-area">
           <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
           <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}
-
+            {% if user_likes %}
             {% if msg.id in user_likes %}
               <i class="far fa-star" style="color: gold;"></i>
-            {% endif %}
+            {% endif %}{% endif %}
           </span>
           <p>{{ msg.text }}</p>
         </div>
         {% if g.user.id != msg.user_id %}
           <form method="POST" action="/messages/{{ msg.id }}/like" class="messages-like">
+            {% if user_likes %}
             <button class="
               btn
               btn-sm
-              {{'btn-primary' if msg.id in user_likes else 'btn-secondary'}}"
-            >
+              {{'btn-primary' if msg.id in user_likes else 'btn-secondary'}}">
+            {% else %}
+            <button class="
+              btn
+              btn-sm
+            'btn-primary'>
+            {% endif %}
               <i class="fa fa-thumbs-up"></i>
             </button>
           </form>
@@ -34,7 +40,9 @@
       </li>
 
       {% endfor %}
-
+      {% else %}
+      <h2>Nothing Here</h2>
+    {% endif %}
     </ul>
   </div>
 {% endblock %}

@@ -156,6 +156,8 @@ def users_show(user_id):
                 .limit(100)
                 .all())
     likes = [message.id for message in user.likes]
+    # import pdb
+    # pdb.set_trace()
     return render_template('users/show.html', user=user, messages=messages, likes=likes, user_likes=user_likes)
 
 
@@ -355,16 +357,20 @@ def homepage():
 
     if g.user:
         following_ids = [i.id for i in g.user.following] + [g.user.id]
+        fmessages = (Message
+                     .query
+                     .filter(Message.user_id.in_(following_ids))
+                     .order_by(Message.timestamp.desc())
+                     .limit(100)
+                     .all())
         messages = (Message
                     .query
-                    .filter(Message.user_id.in_(following_ids))
-                    .order_by(Message.timestamp.desc())
                     .limit(100)
                     .all())
 
         liked_messages = [msg.id for msg in g.user.likes]
 
-        return render_template('home.html', messages=messages, likes=liked_messages)
+        return render_template('home.html', fmessages=fmessages, messages=messages, likes=liked_messages)
 
     else:
         return render_template('home-anon.html')
